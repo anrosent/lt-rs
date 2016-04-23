@@ -1,4 +1,4 @@
-LT-code
+ls-rs
 =======
 
 This is an implementation of a Luby Transform code in Rust, more or less a straight port from my Python project.
