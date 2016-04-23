@@ -107,7 +107,11 @@ impl LTBlockSamplerParams {
 fn blocks_sequence() {
   let num_blocks = 571;
   let seed = 166362120;
-  let expected : Vec<Vec<u32>> = vec!(vec!(98), vec!(400, 62));
+  let expected : Vec<Vec<u32>> = vec!(vec!(98), 
+                                      vec!(400, 62),
+                                      vec!(49, 385),
+                                      vec!(421, 541),
+                                      vec!(336, 109, 412, 410, 463, 231, 319, 564, 417, 305, 313, 461));
   let params = LTBlockSamplerParams::new(num_blocks).seed(seed);
   let sampler = LTBlockSampler::new(params);
   for (block, exp_block) in sampler.zip(expected.iter()) {
