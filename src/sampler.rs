@@ -19,8 +19,14 @@ pub struct LTBlockGenerator {
   cdf: RobustSolitonCDF
 }
 
+pub struct LTBlockSpec {
+  seed: u32,
+  degree: u32,
+  srcblock_ids: Vec<u32>
+}
+
 impl LTBlockGenerator {
-  fn new(params: LTBlockGeneratorParams) -> Self {
+  pub fn new(params: LTBlockGeneratorParams) -> Self {
     return LTBlockGenerator {
       k: params.k,
       prng: LTPrng::new(params.seed),
@@ -28,8 +34,33 @@ impl LTBlockGenerator {
     }
   }
 
-  fn seed(&mut self, seed: u32) {
+  pub fn seed(&mut self, seed: u32) {
     self.prng.seed(seed);
+  }
+
+  pub fn next(&mut self) -> LTBlockSpec {
+    let seed = self.prng.current();
+    let degree = self.sample_degree();
+
+    let mut n = 0;
+    let mut srcblock_ids = vec!();
+    while n < degree {
+      let block_id = self.prng.next() % self.k;
+      if srcblock_ids.contains(&block_id) {
+        srcblock_ids.push(block_id);
+        n += 1;
+      }
+    }
+    LTBlockSpec {
+      seed: seed,
+      degree: degree,
+      srcblock_ids: srcblock_ids
+    }
+  }
+
+  fn sample_degree(&mut self) -> u32 {
+    let sample = self.prng.next() as f64 / PRNG_MAX_RAND as f64;
+    self.cdf.get_index(sample) as u32
   }
 }
 
