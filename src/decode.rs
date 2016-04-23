@@ -1,8 +1,12 @@
-#[cfg(test)]
-mod test {
-    #[test]
-    fn it_works() {
-    }
+// TODO: all of this
+pub struct LTDecoder {
+  
+}
+
+impl LTDecoder {
+  pub fn new() -> Self {
+
+  }
 }
 
 pub fn decode() {

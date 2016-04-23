@@ -105,6 +105,7 @@ impl LTBlockSamplerParams {
 
 #[test]
 fn blocks_sequence() {
+  // Test sequence from http://cs.brown.edu/courses/csci1680/f14/content/projects/lt.pdf, page 9
   let num_blocks = 571;
   let seed = 166362120;
   let expected : Vec<Vec<u32>> = vec!(vec!(98), 

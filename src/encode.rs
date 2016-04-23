@@ -1,10 +1,14 @@
 use super::sampler;
+// TODO: all of this
 
-#[cfg(test)]
-mod test {
-    #[test]
-    fn it_works() {
-    }
+pub struct LTEncoder {
+
+}
+
+impl LTEncoder {
+  pub fn new() -> Self {
+
+  }
 }
 
 pub fn encode() {
