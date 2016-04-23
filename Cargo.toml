@@ -1,0 +1,20 @@
+[package]
+name = "lt"
+version = "0.1.0"
+authors = ["anrosent <anson.rosenthal@gmail.com>"]
+
+[dependencies]
+rand = "0.3"
+
+[lib]
+name = "lt_lib"
+path = "src/lib.rs"
+
+[[bin]]
+name = "lt-encoder"
+path = "bin/encoder.rs"
+
+
+[[bin]]
+name = "lt-decoder"
+path = "bin/decoder.rs"
