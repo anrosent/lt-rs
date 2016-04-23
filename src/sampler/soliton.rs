@@ -1,15 +1,9 @@
-
-// FIXME: Should these be parameterizable? 
-const PRNG_A : u64 = 16807;
-const PRNG_M : u64 = (1 << 31) - 1;
-const PRNG_MAX_RAND : u64 = PRNG_M - 1;
-
 pub struct RobustSolitonCDF {
   cdf: Vec<f64>    
 }
 
 impl RobustSolitonCDF {
-  pub fn new(k: u64, c: f64, delta: f64) -> Self {
+  pub fn new(k: u32, c: f64, delta: f64) -> Self {
     let mu = gen_mu(k, c, delta);
     let mut cdf = vec!();
     for d in 0..k {
@@ -32,7 +26,7 @@ impl RobustSolitonCDF {
   }
 }
 
-fn gen_rho(k: u64) -> Vec<f64> {
+fn gen_rho(k: u32) -> Vec<f64> {
   let mut res = vec!(1f64/k as f64);
   for d in 2..k+1 {
     res.push(1f64/(d * (d-1)) as f64);
@@ -40,7 +34,7 @@ fn gen_rho(k: u64) -> Vec<f64> {
   res
 }
 
-fn gen_mu(k: u64, c: f64, delta: f64) -> Vec<f64> {
+fn gen_mu(k: u32, c: f64, delta: f64) -> Vec<f64> {
   let s = c * (k as f64/delta as f64).ln() * (k as f64).sqrt();
   let tau = gen_tau(k, s, delta);
   let rho = gen_rho(k);
@@ -52,8 +46,8 @@ fn gen_mu(k: u64, c: f64, delta: f64) -> Vec<f64> {
   res
 }
 
-fn gen_tau(k: u64, s: f64, delta: f64) -> Vec<f64> {
-  let pivot = (k as f64/s) as u64;
+fn gen_tau(k: u32, s: f64, delta: f64) -> Vec<f64> {
+  let pivot = (k as f64/s) as u32;
   let mut res = vec!();
   for d in 1..pivot {
     res.push((s/k as f64) * (1f64/(d as f64)));
