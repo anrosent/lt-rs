@@ -10,9 +10,9 @@ pub struct LTBlockSampler {
 
 #[derive(Debug)]
 pub struct LTBlockSpec {
-  seed: u64,
-  degree: u32,
-  srcblock_ids: Vec<u32>
+  pub seed: u64,
+  pub degree: u32,
+  pub srcblock_ixs: Vec<u32>
 }
 
 impl LTBlockSampler {
@@ -33,18 +33,18 @@ impl LTBlockSampler {
     let degree = self.sample_degree();
 
     let mut n = 0;
-    let mut srcblock_ids : Vec<u32> = vec!();
+    let mut srcblock_ixs : Vec<u32> = vec!();
     while n < degree {
       let block_id = (self.prng.next() as u32 % self.k) as u32;
-      if !srcblock_ids.contains(&block_id) {
-        srcblock_ids.push(block_id);
+      if !srcblock_ixs.contains(&block_id) {
+        srcblock_ixs.push(block_id);
         n += 1;
       }
     }
     LTBlockSpec {
       seed: seed,
       degree: degree,
-      srcblock_ids: srcblock_ids
+      srcblock_ixs: srcblock_ixs
     }
   }
 
@@ -65,10 +65,10 @@ impl Iterator for LTBlockSampler {
 }
 
 pub struct LTBlockSamplerParams {
-  k: u32,
-  seed: u64,
-  delta: f64,
-  c: f64
+  pub k: u32,
+  pub seed: u64,
+  pub delta: f64,
+  pub c: f64
 }
 
 impl LTBlockSamplerParams {
@@ -82,6 +82,7 @@ impl LTBlockSamplerParams {
       delta: 0.5f64
     }
   }
+
   pub fn seed(&self, new_seed: u64) -> Self {
     return LTBlockSamplerParams {
       seed: new_seed,
@@ -116,7 +117,7 @@ fn blocks_sequence() {
   let params = LTBlockSamplerParams::new(num_blocks).seed(seed);
   let sampler = LTBlockSampler::new(params);
   for (block, exp_block) in sampler.zip(expected.iter()) {
-    assert_eq!(block.srcblock_ids, *exp_block);
+    assert_eq!(block.srcblock_ixs, *exp_block);
   }
 }
 
