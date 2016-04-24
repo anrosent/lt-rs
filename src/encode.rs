@@ -4,6 +4,7 @@ use std::iter::FromIterator;
 use super::sampler::block::{LTBlockSpec, LTBlockSampler};
 use super::sampler::params::LTBlockSamplerParams;
 
+#[derive(Debug)]
 pub struct LTBlock {
   filesize: u64,
   blocksize: usize,

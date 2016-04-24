@@ -31,14 +31,11 @@ impl LTBlockSampler {
   pub fn next(&mut self) -> LTBlockSpec {
     let seed = self.prng.current();
     let degree = self.sample_degree();
-    println!("Degree is {}", degree);
 
     let mut srcblock_ixs : Vec<u32> = vec!();
     while srcblock_ixs.len() < degree as usize {
       let block_id = (self.prng.next() % self.k);
-      println!("Gen block {}", block_id);
       if !srcblock_ixs.contains(&block_id) {
-        println!("adding block {}", block_id);
         srcblock_ixs.push(block_id);
       }
     }
