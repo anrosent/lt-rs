@@ -12,7 +12,31 @@ The encoding algorithm follows the given spec, so no innovations there. A few op
 Second, the integer representation of all blocks is held in RAM for maximum speed in block sample generation. This is a limitation on the size of the file practically encoded on most computers, but this decision does not reach far into other parts of the design, and it can be easily addressed if necessary for better memory scalability.
 
 ```rust
-// TODO:
+extern crate lt_lib;
+
+use std::io::{self, Write};
+use std::fs::File;
+use lt_lib::encode::LTEncoder;
+use lt_lib::sampler::LTBlockSamplerParams;
+
+// Get standard out
+let stdout = io::stdout();
+let mut handle = stdout.lock();
+
+// Open file to transmit
+let mut f = try!(File::open("foo.txt");
+
+// Build encoder with default parameters to stream file in 100 chunks
+let num_blocks = 100;
+let params = LTBlockSamplerParams::new(num_blocks);
+let encoder = LTEncoder::(params, f);
+
+// Write each block to standard out
+for block in encoder {
+    try!(handle.write(block));
+}
+
+
 ```
 
 ## Decoding
