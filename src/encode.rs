@@ -1,12 +1,13 @@
 use std::io::prelude::*;
 use std::fs::File;
 use std::iter::FromIterator;
-use super::sampler::block::{LTBlockSpec, LTBlockSampler, LTBlockSamplerParams};
+use super::sampler::block::{LTBlockSpec, LTBlockSampler};
+use super::sampler::params::LTBlockSamplerParams;
 
 pub struct LTBlock {
   filesize: u64,
   blocksize: usize,
-  blockseed: u64,
+  blockseed: u32,
   data: Vec<u8>
 }
 
@@ -63,9 +64,8 @@ impl LTEncoder {
       Ok(meta) => {
         let blocksize = (meta.len()/params.k as u64) as usize;
         LTEncoder {
-          // TODO: do all these vars the right way
-          filesize: 0u64,
-          blocksize: 0,
+          filesize: meta.len(),
+          blocksize: blocksize,
           sampler: LTBlockSampler::new(params),
           blocks: Box::new(InMemoryBlockStore::new(blocksize, file))
         }

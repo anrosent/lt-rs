@@ -1,42 +1,41 @@
 
 // Parameters for PRNG
-const PRNG_A : u64 = 16807;
-const PRNG_M : u64 = (1 << 31) - 1;
-const PRNG_MAX_RAND : u64 = PRNG_M - 1;
+const PRNG_A : u32 = 16807;
+const PRNG_M : u32 = (1 << 31) - 1;
 
 pub struct LTPrng {
-  state: u64
+  state: u32
 }
 
 impl LTPrng {
-  pub fn new(seed: u64) -> Self {
+  pub fn new(seed: u32) -> Self {
     LTPrng {
       state: seed
     }
   }
 
-  pub fn upper_bound(&self) -> u64 {
-    PRNG_MAX_RAND
+  pub fn upper_bound(&self) -> u32 {
+    PRNG_M - 1
   }
 
-  pub fn seed(&mut self, seed: u64) {
+  pub fn seed(&mut self, seed: u32) {
     self.state = seed;
   }
 
-  pub fn next(&mut self) -> u64 {
-    self.state = (PRNG_A * self.state) % PRNG_M;
+  pub fn next(&mut self) -> u32 {
+    self.state = ((PRNG_A as u64 * self.state as u64) % PRNG_M as u64) as u32;
     self.state
   }
 
-  pub fn current(&self) -> u64 {
+  pub fn current(&self) -> u32 {
     self.state
   }
 }
 
 impl Iterator for LTPrng {
-  type Item = u64;
+  type Item = u32;
 
-  fn next(&mut self) -> Option<u64> {
+  fn next(&mut self) -> Option<u32> {
     Some(self.next())
   }
 }

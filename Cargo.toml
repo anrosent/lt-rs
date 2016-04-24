@@ -5,9 +5,10 @@ authors = ["anrosent <anson.rosenthal@gmail.com>"]
 
 [dependencies]
 rand = "0.3"
+getopts = "0.2"
 
 [lib]
-name = "lt_lib"
+name = "lt"
 path = "src/lib.rs"
 
 [[bin]]

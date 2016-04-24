@@ -1,7 +1,7 @@
 // TODO: all of this
-extern crate lt_lib;
+extern crate lt;
 
-use lt_lib::decode;
+use lt::decode;
 
 fn main () {
   decode::decode();

@@ -1,4 +1,4 @@
-extern crate rand; 
+use super::params::LTBlockSamplerParams;
 use super::prng::LTPrng;
 use super::soliton::RobustSolitonCDF;
 
@@ -10,7 +10,7 @@ pub struct LTBlockSampler {
 
 #[derive(Debug)]
 pub struct LTBlockSpec {
-  pub seed: u64,
+  pub seed: u32,
   pub degree: u32,
   pub srcblock_ixs: Vec<u32>
 }
@@ -24,21 +24,22 @@ impl LTBlockSampler {
     }
   }
 
-  pub fn seed(&mut self, seed: u64) {
+  pub fn seed(&mut self, seed: u32) {
     self.prng.seed(seed);
   }
 
   pub fn next(&mut self) -> LTBlockSpec {
     let seed = self.prng.current();
     let degree = self.sample_degree();
+    println!("Degree is {}", degree);
 
-    let mut n = 0;
     let mut srcblock_ixs : Vec<u32> = vec!();
-    while n < degree {
-      let block_id = (self.prng.next() as u32 % self.k) as u32;
+    while srcblock_ixs.len() < degree as usize {
+      let block_id = (self.prng.next() % self.k);
+      println!("Gen block {}", block_id);
       if !srcblock_ixs.contains(&block_id) {
+        println!("adding block {}", block_id);
         srcblock_ixs.push(block_id);
-        n += 1;
       }
     }
     LTBlockSpec {
@@ -63,46 +64,6 @@ impl Iterator for LTBlockSampler {
     Some(self.next())
   }
 }
-
-pub struct LTBlockSamplerParams {
-  pub k: u32,
-  pub seed: u64,
-  pub delta: f64,
-  pub c: f64
-}
-
-impl LTBlockSamplerParams {
-  pub fn new(num_blocks: u32) -> Self {
-    return LTBlockSamplerParams {
-      k: num_blocks,
-
-      // Default parameters for Robust Soliton Distribution
-      seed: rand::random::<u64>(),
-      c: 0.1f64,
-      delta: 0.5f64
-    }
-  }
-
-  pub fn seed(&self, new_seed: u64) -> Self {
-    return LTBlockSamplerParams {
-      seed: new_seed,
-      .. *self
-    }
-  }
-  pub fn c(&self, new_c: f64) -> Self {
-   return LTBlockSamplerParams {
-    c: new_c,
-    .. *self
-   }
-  }
-  pub fn delta(&self, new_delta: f64) -> Self {
-   return LTBlockSamplerParams {
-    delta: new_delta,
-    .. *self
-   }
-  }
-}
-
 
 #[test]
 fn blocks_sequence() {

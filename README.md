@@ -12,12 +12,12 @@ The encoding algorithm follows the given spec, so no innovations there. A few op
 Second, the integer representation of all blocks is held in RAM for maximum speed in block sample generation. This is a limitation on the size of the file practically encoded on most computers, but this decision does not reach far into other parts of the design, and it can be easily addressed if necessary for better memory scalability.
 
 ```rust
-extern crate lt_lib;
+extern crate lt;
 
 use std::io::{self, Write};
 use std::fs::File;
-use lt_lib::encode::LTEncoder;
-use lt_lib::sampler::LTBlockSamplerParams;
+use lt::encode::LTEncoder;
+use lt::sampler::LTBlockSamplerParams;
 
 // Get standard out
 let stdout = io::stdout();
