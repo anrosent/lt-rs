@@ -24,7 +24,7 @@ let stdout = io::stdout();
 let mut handle = stdout.lock();
 
 // Open file to transmit
-let mut f = try!(File::open("foo.txt");
+let mut f = try!(File::open("foo.txt"));
 
 // Build encoder with default parameters to stream file in 100 chunks
 let num_blocks = 100;
