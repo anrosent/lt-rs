@@ -34,7 +34,7 @@ impl LTBlockSampler {
 
     let mut srcblock_ixs : Vec<u32> = vec!();
     while srcblock_ixs.len() < degree as usize {
-      let block_id = (self.prng.next() % self.k);
+      let block_id = self.prng.next() % self.k;
       if !srcblock_ixs.contains(&block_id) {
         srcblock_ixs.push(block_id);
       }
