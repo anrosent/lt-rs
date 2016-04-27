@@ -29,11 +29,11 @@ let mut f = try!(File::open("foo.txt"));
 // Build encoder with default parameters to stream file in 100 chunks
 let num_blocks = 100;
 let params = LTBlockSamplerParams::new(num_blocks);
-let encoder = LTEncoder::(params, f);
+let encoder = LTEncoder::(params, &mut f);
 
 // Write each block to standard out
 for block in encoder {
-    try!(handle.write(block));
+    try!(handle.write(block.encode()));
 }
 
 

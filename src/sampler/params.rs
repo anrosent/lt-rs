@@ -9,7 +9,7 @@ pub struct LTBlockSamplerParams {
 
 impl LTBlockSamplerParams {
   pub fn new(num_blocks: u32) -> Self {
-    return LTBlockSamplerParams {
+    LTBlockSamplerParams {
       k: num_blocks,
 
       // Default parameters for Robust Soliton Distribution
@@ -19,22 +19,28 @@ impl LTBlockSamplerParams {
     }
   }
 
+  pub fn k(&self, new_k: u32) -> Self {
+    LTBlockSamplerParams {
+      k: new_k,
+      .. *self
+    }
+  }
   pub fn seed(&self, new_seed: u32) -> Self {
-    return LTBlockSamplerParams {
+    LTBlockSamplerParams {
       seed: new_seed,
       .. *self
     }
   }
   pub fn c(&self, new_c: f64) -> Self {
-   return LTBlockSamplerParams {
-    c: new_c,
-    .. *self
-   }
+    LTBlockSamplerParams {
+      c: new_c,
+      .. *self
+    }
   }
   pub fn delta(&self, new_delta: f64) -> Self {
-   return LTBlockSamplerParams {
-    delta: new_delta,
-    .. *self
-   }
+    LTBlockSamplerParams {
+      delta: new_delta,
+      .. *self
+    }
   }
 }
