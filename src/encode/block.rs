@@ -43,6 +43,7 @@ impl LTBlock {
     buf
   }
 
+  // TODO: should take Reader, not Vec
   pub fn decode(mut bytes: Vec<u8>) -> Result<Self, &'static str> {
 
     // Set from NETWORK to NATIVE byte order
@@ -68,6 +69,7 @@ impl LTBlock {
     }
     let blockseed = bytes_to_num(bs_bytes) as u32;
 
+    // TODO: should only take up to blocksize!
     let data = bytes.iter().skip(size_of::<u64>() + size_of::<usize>() + size_of::<u32>()).cloned().collect();
 
     Ok(LTBlock {

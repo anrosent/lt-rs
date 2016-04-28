@@ -1,3 +1,5 @@
+use std::io::Read;
+use std::result::Result;
 use super::sampler::{LTBlockSampler, LTBlockSpec};
 use super::sampler::params::LTBlockSamplerParams;
 use super::encode::block::LTBlock;
@@ -17,13 +19,7 @@ pub struct LTDecoderInitializer {
 }
 
 impl LTDecoderInitializer {
-  pub fn new(params: LTBlockSamplerParams) -> Self {
-    LTDecoderInitializer {
-      params: params
-    }
-  }
-
-  pub fn consume(self, block: LTBlock) -> LTDecoder {
+  pub fn decoder(&self, block: &LTBlock) -> LTDecoder {
     let filesize = block.filesize;
     let blocksize = block.blocksize;
     let num_blocks = (block.filesize as f64/ block.blocksize as f64).ceil() as u32;
@@ -39,17 +35,43 @@ impl LTDecoderInitializer {
 }
 
 impl LTDecoder {
-  pub fn consume(mut self, block: LTBlock) -> Option<Vec<u8>> {
+  pub fn initializer(params: LTBlockSamplerParams) -> LTDecoderInitializer {
+    LTDecoderInitializer {
+      params: params
+    }
+  }
+  pub fn consume(&mut self, block: LTBlock) -> Result<Option<Vec<u8>>, &'static str> {
+    try!(self.validate(&block));
     self.sampler.seed(block.blockseed);
     let blockspec: LTBlockSpec = self.sampler.next();
     if self.decoder.consume(&blockspec.srcblock_ixs, &block.data) {
-      Some(self.decoder.unwrap())
+      Ok(Some(self.decoder.get()))
     } else {
-      None
+      Ok(None)
+    }
+  }
+
+  fn validate(&self, block: &LTBlock) -> Result<(), &'static str> {
+    if !(self.blocksize == block.blocksize && self.filesize == block.filesize) {
+      Err("inconsistent block or file size")
+    } else {
+      Ok(())
+    }
+  }
+
+  pub fn blocks<'a>(reader: &'a mut Read) -> LTBlockStream {
+    LTBlockStream {
+      reader: reader
     }
   }
 }
 
-pub fn decode() {
-  println!("decoded!");
+pub struct LTBlockStream <'a> {
+  reader: &'a mut Read
+}
+impl<'a> Iterator for LTBlockStream<'a> {
+  type Item = LTBlock;
+  fn next(&mut self) -> Option<LTBlock> {
+    None
+  }
 }

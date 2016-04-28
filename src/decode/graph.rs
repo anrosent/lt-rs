@@ -20,9 +20,9 @@ impl BlockGraphDecoder {
   }
 
   // TODO:
-  pub fn unwrap(self) -> Vec<u8> {
+  pub fn get(&self) -> Vec<u8> {
     if self.complete {
-      self.blocks
+      self.blocks.clone()
     } else {
       panic!("Unwrapping a decoder that is not finished decoding");
     }
