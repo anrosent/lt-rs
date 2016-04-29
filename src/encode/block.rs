@@ -1,4 +1,5 @@
 use std::mem::size_of;
+use super::super::common::{num_to_bytes, bytes_to_num};
 
 #[derive(Debug, Clone, PartialEq)]
 pub struct LTBlock {
@@ -6,24 +7,6 @@ pub struct LTBlock {
   pub blocksize: usize,
   pub blockseed: u32,
   pub data: Vec<u8>
-}
-
-// TODO: needs testing
-fn num_to_bytes(n: u64, nbytes: usize) -> Vec<u8> {
-  let mut buf = vec!();
-  for shifts in (0..nbytes).rev() {
-    buf.push((n >> (8 * shifts)) as u8);
-  }
-  buf
-}
-
-// TODO: needs testing
-fn bytes_to_num(bytes: Vec<&u8>) -> u64 {
-  let mut res = 0u64;
-  for (ix, &byte) in bytes.iter().rev().enumerate() {
-    res |= (*byte as u64) << (8 * ix);
-  }
-  res
 }
 
 impl LTBlock {

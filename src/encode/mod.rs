@@ -1,6 +1,7 @@
 use std::io::prelude::*;
 use std::fs::File;
 
+use super::common::vec_xor;
 use super::sampler::{LTBlockSpec, LTBlockSampler};
 use super::sampler::params::LTBlockSamplerParams;
 
@@ -54,12 +55,5 @@ impl Iterator for LTEncoder {
       blockseed: block.seed,
       data: data
     })
-  }
-}
-
-fn vec_xor(v1: &mut [u8], v2: &[u8]) {
-  assert_eq!(v1.len(), v2.len());
-  for (ix, b) in v2.iter().enumerate() {
-    v1[ix] ^= *b;
   }
 }

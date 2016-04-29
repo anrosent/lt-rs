@@ -44,11 +44,8 @@ impl LTDecoder {
     try!(self.validate(&block));
     self.sampler.seed(block.blockseed);
     let blockspec: LTBlockSpec = self.sampler.next();
-    if self.decoder.consume(&blockspec.srcblock_ixs, &block.data) {
-      Ok(Some(self.decoder.get()))
-    } else {
-      Ok(None)
-    }
+    self.decoder.consume(blockspec.srcblock_ixs, block.data);
+    Ok(self.decoder.get())
   }
 
   fn validate(&self, block: &LTBlock) -> Result<(), &'static str> {
